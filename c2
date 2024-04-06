@@ -1,0 +1,63 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+df = pd.read_csv('Automobile_data.csv')
+
+nRowRead =1000
+df_automobile = pd.read_csv('Automobile_data.csv',delimiter = ',',nrows = nRowRead)
+df_automobile.dataframeName = 'Automobile_data.csv'
+nRow,nCol = df_automobile.shape
+print(f' There are {nRow} rows and {nCol} columns')
+
+df_data = df_automobile.replace('?',np.NAN)
+df_data.isnull().sum()
+
+df_temp=df_automobile[df_automobile['normalized-losses'] != '?']
+normalised_mean = df_temp['normalized-losses'].astype(int).mean()
+df_automobile['normalized-losses'] = df_automobile['normalized-losses'].replace('?',normalised_mean).astype(int)
+
+df_temp=df_automobile[df_automobile['price'] != '?']
+price_mean = df_temp['price'].astype(int).mean()
+df_automobile['price'] = df_automobile['price'].replace('?',price_mean).astype(int)
+
+
+df_temp=df_automobile[df_automobile['bore'] != '?']
+bore_mean = df_temp['bore'].astype(float).mean()
+df_automobile['bore'] = df_automobile['bore'].replace('?',bore_mean).astype(float)
+
+df_temp=df_automobile[df_automobile['stroke'] != '?']
+stroke_mean = df_temp['stroke'].astype(float).mean()
+df_automobile['stroke'] = df_automobile['stroke'].replace('?',stroke_mean).astype(float)
+
+df_temp=df_automobile[df_automobile['horsepower'] != '?']
+horsepower_mean = df_temp['horsepower'].astype(int).mean()
+df_automobile['horsepower'] = df_automobile['horsepower'].replace('?',horsepower_mean).astype(int)
+
+df_temp=df_automobile[df_automobile['peak-rpm'] != '?']
+peak_mean = df_temp['peak-rpm'].astype(int).mean()
+df_automobile['peak-rpm'] = df_automobile['peak-rpm'].replace('?',peak_mean).astype(int)
+
+df_automobile['num-of-doors'] = df_automobile['num-of-doors'].replace('?','four')
+df_automobile.head()
+
+plt.figure(figsize=(10,6))
+sns.countplot(data=df_automobile,x="num-of-doors",hue="fuel-type")
+plt.title("Distribution of Two and Four-Door cars by Fuel Type")
+plt.show()
+
+plt.figure(figsize=(10,6))
+sns.countplot(data=df_automobile,x="body-style",hue="fuel-type")
+plt.title("Distribution of Body style cars by Fuel Type")
+plt.show()
+
+plt.figure(figsize=(10,6))
+sns.countplot(data=df_automobile,x="body-style",hue="fuel-type",hue_order=["diesel","gas"])
+plt.title("Distribution of Body style cars by Fuel Type")
+plt.show()
+
+plt.figure(figsize=(10,6))
+sns.boxplot(data=df_automobile,x="fuel-type",y="horsepower",hue="drive-wheels")
+plt.title("Hp by Fuel type and drive wheel type")
+plt.show()
