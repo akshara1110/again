@@ -1,0 +1,7 @@
+import pandas as pd
+data = pd.read_csv('births.csv')
+births_by_year_gender = data.groupby(['year', 'gender'])['births'].sum()
+births_by_year_gender
+data['decade'] = (data['year'] // 10) * 10
+average_daily_births = data.groupby(['day', 'decade'])['births'].mean()
+average_daily_births
