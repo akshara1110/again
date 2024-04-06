@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+df=pd.read_csv('churn.csv')
+print(df)
+df.plot()
+
+df['customerID'].duplicated(keep=False).sum()
+
+df.isna().sum()
+
+df['TotalCharges'].isna().sum()
+
+df['MonthlyCharges'].mean()
+
+df[df['Dependents'].str.contains('1@#')]
+df[df['Dependents'].str.contains('1@#')].plot(kind ='bar')
+
+plt.bar(df["MonthlyCharges"], df["Dependents"])
+plt.xlabel("Monthly Charges")
+plt.ylabel("Dependents")
+plt.title("Monthly Charges vs Dependents")
+plt.show()
+
+srs=df.agg({'MonthlyCharges':'mean'})
+#print(srs)
+df['MonthlyCharges']=df['MonthlyCharges'].fillna(value=srs)
+print(df['MonthlyCharges'])
+df['MonthlyCharges'].plot(kind ='bar')
